@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Fase D'installazione del Software</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url("img/parthenope.jpg");
+            background-repeat: no-repeat;
+            background-position: center 150px;
+        }
+        h3 {
+            color: white;
+        }
+    </style>
+</head>
+
+<body style="background-color:white">
+    <h2>Inserisci i dati per completare l'installazione</h2>
+    <!-- FORM PER L'INSTALLAZIONE -->
+    <form action="HomePage.html">
+        <h3>Seleziona i tuoi dati Geografici</h3>
+        <label for="regioni">Seleziona la tua regione:</label>
+        <select id="regioni" name="regioni">
+            <option value="abruzzo">Abruzzo</option>
+            <option value="basilicata">Basilicata</option>
+            <option value="calabria">Calabria</option>
+            <option value="campania">Campania</option>
+            <option value="emilia-romagna">Emilia-Romagna</option>
+            <option value="friuli-venezia-giulia">Friuli-Venezia Giulia</option>
+            <option value="lazio">Lazio</option>
+            <option value="liguria">Liguria</option>
+            <option value="lombardia">Lombardia</option>
+            <option value="marche">Marche</option>
+            <option value="molise">Molise</option>
+            <option value="piemonte">Piemonte</option>
+            <option value="puglia">Puglia</option>
+            <option value="sardegna">Sardegna</option>
+            <option value="sicilia">Sicilia</option>
+            <option value="toscana">Toscana</option>
+            <option value="trentino-alto-adige">Trentino-Alto Adige</option>
+            <option value="umbria">Umbria</option>
+            <option value="valle-d-aosta">Valle d'Aosta</option>
+            <option value="veneto">Veneto</option>
+        </select><br><br>
+
+        <label for="Altitudine">Altitudine:</label>
+        <select id="Altitudine" name="Altitudine">
+            <option value="mare">Mare</option>
+            <option value="montagna">Montagna</option>
+            <option value="collina">Collina</option>
+        </select><br><br>
+
+        <h3>Seleziona i tuoi dati Ambientali</h3>
+        <label for="dimensioni">Misure del locale:</label>
+        <select id="dimensioni" name="dimensioni">
+            <option value="300x200x270">300 x 200 x 270 cm</option>
+            <option value="400x300x270">400 x 300 x 270 cm</option>
+            <option value="500x400x300">500 x 400 x 300 cm</option>
+        </select><br><br>
+
+        <script>
+            function createApertureInputs() {
+                var numAperture = document.getElementById("aperture").value;
+                var apertureInputs = "";
+
+                var apertureTypes = [
+                    { value: "finestra", label: "Finestra" },
+                    { value: "porta", label: "Porta" },
+                ];
+
+                var apertureStates = [
+                    { value: "aperta", label: "Aperta" },
+                    { value: "chiusa", label: "Chiusa" }
+                ];
+
+                for (var i = 0; i < numAperture; i++) {
+                    var apertureTypeSelect = "";
+                    var apertureStateSelect = "";
+                    var id = "apertura_" + (i + 1);
+
+                    if (numAperture === 1) {
+                        apertureTypeSelect = `
+                    <label for="${id}_type">Tipo di apertura:</label>
+                    <select id="${id}_type" name="${id}_type">
+                        ${getOptionHtml(apertureTypes)}
+                    </select><br><br>
+                `;
+
+                        apertureStateSelect = `
+                    <label for="${id}_state">Stato:</label>
+                    <select id="${id}_state" name="${id}_state">
+                        ${getOptionHtml(apertureStates)}
+                    </select><br><br>
+                `;
+                    } else {
+                        apertureTypeSelect = `
+                    <label for="${id}_type">Tipo dell'apertura ${i + 1}:</label>
+                    <select id="${id}_type" name="${id}_type">
+                        ${getOptionHtml(apertureTypes)}
+                    </select><br><br>
+                `;
+
+                        apertureStateSelect = `
+                    <label for="${id}_state">Stato dell'${id}:</label>
+                    <select id="${id}_state" name="${id}_state">
+                        ${getOptionHtml(apertureStates)}
+                    </select><br><br>
+                `;
+                    }
+
+                    apertureInputs += apertureTypeSelect + apertureStateSelect;
+                }
+
+                document.getElementById("aperture_inputs").innerHTML = apertureInputs;
+            }
+
+            function getOptionHtml(options) {
+                var html = "";
+
+                options.forEach(function (option) {
+                    html += `<option value="${option.value}">${option.label}</option>`;
+                });
+
+                return html;
+            }
+        </script>
+
+        <h3>Impostazioni Aperture</h3>
+        <label for="aperture">Numero di aperture:</label>
+        <select id="aperture" name="aperture" onchange="createApertureInputs()">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select><br><br>
+        <div id="aperture_inputs"></div>
+
+        <h3>Seleziona i tuoi dati temporali:</h3>
+        <label for="ora">Ora:</label>
+        <input type="time" id="ora" name="ora">
+
+        <input type="date" id="data" name="data"><br><br>
+        <h3>Impostazioni Limitatore di Watt</h3>
+        <label for="limitatore">Inserisci un valore compreso tra 500 e 3000:</label>
+        <input type="number" name="limitatore" id="limitatore" min="500" max="3000"><br><br>
+        <input type="submit" value="Completa Installazione">
+    </form>
+</body>
+
+</html>

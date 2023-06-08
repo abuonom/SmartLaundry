@@ -1,0 +1,136 @@
+body {
+  background-image: url("img/parthenope.jpg");
+  background-repeat: no-repeat;
+  background-position: center 246px;
+  background-color: white;
+}
+
+nav {
+  background-color: #1CA0BE;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+li a:hover {
+  background-color: #1CBDDA;
+}
+
+li a.active {
+  background-color: #0B486B;
+  transform: scale(1.1); /* Aumenta la dimensione del link selezionato */
+}
+
+h1 {
+  color: #fefee9;
+}
+
+.card-container {
+  display: flex;
+  gap: 18px;
+  justify-content: start;
+  align-content: center;
+  width: 100%;
+}
+
+.card1,
+.card2,
+.card3,
+.card4 {
+  width: auto;
+  margin-bottom: 20px;
+  border: 1px solid #caa069;
+  border-radius: 5px;
+  border-color: white;
+  height: fit-content;
+  background: #0B486B;
+  position: relative;
+}
+
+.card-content {
+  padding: 10px;
+}
+
+.card-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.one {
+  background-color: limegreen;
+  float: left;
+}
+
+.two {
+  background-color: orange;
+  float: left;
+}
+
+.three {
+  background-color: hotpink;
+  float: left;
+}
+
+.four {
+  background-color: black;
+  float: left;
+}
+
+p {
+  font-size: 37px;
+  color: antiquewhite;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 250px;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #0B486B;
+  color: #fefee9;
+}
+
+form label {
+  color: #fefee9;
+}
+
+form select,
+form input[type="date"],
+form input[type="button"] {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #fefee9;
+  color: #3a4a68;
+}
+
+form input[type="button"] {
+  background-color: #1cbdda;
+  color: white;
+  cursor: pointer;
+}
+
+form #data {
+  background-color: #fefee9;
+  color: #3a4a68;
+}

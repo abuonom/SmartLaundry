@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Parametri Sensori</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-image: url("img/parthenope.jpg");
+      background-repeat: no-repeat;
+    }
+  </style>
+</head>
+
+<body style="background-color:white">
+
+  <!-- nav-bar per la navigazione nelle funzioni-->
+  <nav>
+    <ul>
+      <li><a class="nav-link" href="HomePage.html">Home</a></li>
+      <li><a class="nav-link" href="Lavaggio.html">Lavaggio bucato</a></li>
+      <li><a class="nav-link" href="Asciugatura.html">Asciugatura bucato</a></li>
+      <li><a class="nav-link" href="Deumidificatore.html">Deumidificazione Aria</a></li>
+      <li><a class="nav-link" href="Riscaldamento.html">Riscaldamento Aria</a></li>
+      <li><a class="nav-link active" href="ParametriSensori.html">Parametri Sensori</a></li>
+      <li style="float:right"><a href="Impostazioni.html">Impostazioni</a></li>
+    </ul>
+  </nav>
+  <br>
+  <form>
+    <label>Umidità attuale: <span id="umidità"></span>%</label></p>
+    <label>Temperatura attuale: <span id="temperatura"></span>&deg;C</label></p>
+    <label>Tipologia bucato ad asciugare: <span id="tipologiaAsciugare"></span></label></p>
+    <label>Peso bucato ad asciugare: <span id="pesoAsciugare"></span> kg</label></p>
+    <label>Tipologia bucato in lavatrice: <span id="tipologiaLavatrice"></span></label></p>
+    <label>Peso bucato in lavatrice: <span id="pesoLavatrice"></span> kg</label></p>
+    <label>Centrifuga lavatrice: <span id="centrifugaLavatrice"></span> giri/min</label></p>
+    <button id="refreshButton" type="button">Aggiorna</button>
+    <button id="scientificButton" type="button">Valori scientifici</button>
+  </form>
+
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+      let temperatura = Math.floor(Math.random() * 21) + 10;
+      let umidità = Math.floor(Math.random() * 21) + 10;
+      let tipologiaAsciugare = "cotone";
+      let pesoAsciugare = 5;
+      let tipologiaLavatrice = "tessuti misti";
+      let pesoLavatrice = 4;
+      let centrifugaLavatrice = 800;
+      const sogliaMinima = 20;
+      let intervalId;
+      let scientificValues = false;
+      let umiditàOriginale;
+      let temperaturaOriginale;
+
+      function generateRandomValue(currentValue) {
+        const maxChange = 2;
+        const newValue = Math.random() * (maxChange * 2 + 1) + (currentValue - maxChange);
+        return Math.round(newValue * 100) / 100;
+      }
+
+      function aggiornaUmidità() {
+        let umiditàDisplay = umidità;
+        if (scientificValues) {
+          umiditàDisplay = generateRandomValue(umidità).toFixed(2);
+        }
+        document.getElementById("umidità").innerHTML = umiditàDisplay;
+      }
+
+      function aggiornaTemperatura() {
+        let temperaturaDisplay = temperatura;
+        if (scientificValues) {
+          temperaturaDisplay = generateRandomValue(temperatura).toFixed(2);
+        }
+        document.getElementById("temperatura").innerHTML = temperaturaDisplay;
+      }
+
+      function aggiornaTipologiaAsciugare() {
+        document.getElementById("tipologiaAsciugare").innerHTML = tipologiaAsciugare;
+      }
+
+      function aggiornaPesoAsciugare() {
+        document.getElementById("pesoAsciugare").innerHTML = pesoAsciugare;
+      }
+
+      function aggiornaTipologiaLavatrice() {
+        document.getElementById("tipologiaLavatrice").innerHTML = tipologiaLavatrice;
+      }
+
+      function aggiornaPesoLavatrice() {
+        document.getElementById("pesoLavatrice").innerHTML = pesoLavatrice;
+      }
+
+      function aggiornaCentrifugaLavatrice() {
+        document.getElementById("centrifugaLavatrice").innerHTML = centrifugaLavatrice;
+      }
+
+      function regolaUmdidità() {
+        intervalId = setInterval(function() {
+          umidità = generateRandomValue(umidità);
+          aggiornaUmidità();
+        }, 600000);
+      }
+
+      function regolaTemperatura() {
+        intervalId = setInterval(function() {
+          temperatura = generateRandomValue(temperatura);
+          aggiornaTemperatura();
+        }, 600000);
+      }
+
+      document.getElementById("refreshButton").addEventListener("click", function() {
+        if (!scientificValues) {
+          umidità = Math.floor(Math.random() * 21) + 10;
+          temperatura = Math.floor(Math.random() * 21) + 10;
+        }
+        aggiornaUmidità();
+        aggiornaTemperatura();
+      });
+
+      document.getElementById("scientificButton").addEventListener("click", function() {
+        scientificValues = !scientificValues;
+        if (scientificValues) {
+          document.getElementById("scientificButton").innerHTML = "Valori interi";
+        } else {
+          document.getElementById("scientificButton").innerHTML = "Valori scientifici";
+        }
+        aggiornaUmidità();
+        aggiornaTemperatura();
+      });
+
+      umiditàOriginale = umidità;
+      temperaturaOriginale = temperatura;
+
+      aggiornaUmidità();
+      aggiornaTemperatura();
+      aggiornaTipologiaAsciugare();
+      aggiornaPesoAsciugare();
+      aggiornaTipologiaLavatrice();
+      aggiornaPesoLavatrice();
+      aggiornaCentrifugaLavatrice();
+      regolaUmdidità();
+      regolaTemperatura();
+    });
+  </script>
+
+</body>
+</html>

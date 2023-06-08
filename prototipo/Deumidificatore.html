@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Deumidificazione</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-image: url("img/parthenope.jpg");
+      background-repeat: no-repeat;
+      background-position: center 120px;
+    }
+  </style>
+
+  <script type="text/javascript">
+    let umidità = Math.floor(Math.random() * 21) + 10; // inizializza l'umidità
+    const sogliaMinima = 20; // imposta la soglia minima a 20
+    let intervalId;
+
+    function aggiornaUmidità() {
+      document.getElementById("umidità").innerHTML = umidità; // aggiorna il contenuto dell'elemento HTML
+    }
+    setInterval(aggiornaUmidità, 100);
+
+    // funzione per avviare la deumidificazione e regolare l'umidità
+    function regolaUmdidità() {
+      // aggiorna l'umdidità randomicamente ogni 10 minuti
+      setInterval(function () {
+        umidità = Math.floor(Math.random() * 40); // genera un valore casuale tra 0 e 40
+        aggiornaUmdidità();
+        alert("Umidità attuale: " + umidità); // visualizza l'umidità attuale
+        if (umidità < sogliaMinima) {
+          alert("Avvio della Deumidificazione..."); // avvia la deumidificazione
+        } else {
+          alert("L'umidità è sopra la soglia minima."); // l'umidità è sopra la soglia minima
+        }
+      }, 60000); // esegue la funzione ogni 10 minuti (600000 millisecondi)
+    }
+
+    // funzione per attivare la duemidificazione manuale e continuare finché non viene fermato
+    function attiva_deumidificazione_manuale() {
+        alert("Avvio della deumidificazione...");
+        intervalId = setInterval(function () {
+          // simula la diminuzione dell'umidità
+          umidità -= 1;
+          // aggiorna la progress bar
+          document.getElementById("progress-bar").value = umidità;
+          // aggiorna l'umdidità attuale
+          aggiornaUmidità();
+          if (umidità <= 0) {
+      clearInterval(intervalId);
+      alert("Fermo la Deumidificazione, l'umidità è al 0%");
+    }
+        }, 1000); // esegue la funzione ogni secondo (1000 millisecondi)
+      }
+
+    // funzione per fermare la deumidificazione
+    function fermaDeumidificazione() {
+      alert("Fermo la Deumidificazione...");
+      clearInterval(intervalId); // ferma l'esecuzione dell'intervallo
+      // aggiorna la progress bar
+      document.getElementById("progress-bar").value = umidità;
+      // aggiorna l'umidità attuale
+      aggiornaUmidità();
+    }
+
+    regolaUmdidità(); // avvia la funzione
+  </script>
+</head>
+
+<body style="background-color:white">
+
+  <!-- nav-bar per la navigazione nelle funzioni-->
+  <nav>
+    <ul>
+      <li><a class="nav-link" href="HomePage.html">Home</a></li>
+      <li><a class="nav-link" href="Lavaggio.html">Lavaggio bucato</a></li>
+      <li><a class="nav-link" href="Asciugatura.html">Asciugatura bucato</a></li>
+      <li><a class="nav-link active" href="Deumidificatore.html">Deumidificazione Aria</a></li>
+      <li><a class="nav-link" href="Riscaldamento.html">Riscaldamento Aria</a></li>
+      <li><a class="nav-link" href="ParametriSensori.html">Parametri Sensori</a></li>
+      <li style="float:right"><a href="Impostazioni.html">Impostazioni</a></li>
+    </ul>
+  </nav>
+  <br>
+  <form>
+    <label>Umidità attuale: <span id="umidità"></span>%</label></p>
+    <progress id="progress-bar" value="0" max="100"></progress><br><br>
+    <input type="button" value="Avvia la deumidificazione" onclick="attiva_deumidificazione_manuale()">
+    <input type="button" value="Ferma la deumidificazione" onclick="fermaDeumidificazione()">
+  </form>
+
+</body>
+
+</html>

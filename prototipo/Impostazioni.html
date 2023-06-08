@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Impostazioni</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url("img/parthenope.jpg");
+            background-repeat: no-repeat;
+            background-position: center 120px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+</head>
+
+<body style="background-color:white">
+    <!-- nav-bar per la navigazione nelle funzioni-->
+    <nav>
+        <ul>
+            <li><a class="nav-link" href="HomePage.html">Home</a></li>
+            <li><a class="nav-link" href="Lavaggio.html">Lavaggio bucato</a></li>
+            <li><a class="nav-link" href="Asciugatura.html">Asciugatura bucato</a></li>
+            <li><a class="nav-link" href="Deumidificatore.html">Deumidificazione Aria</a></li>
+            <li><a class="nav-link" href="Riscaldamento.html">Riscaldamento Aria</a></li>
+            <li><a class="nav-link" href="ParametriSensori.html">Parametri Sensori</a></li>
+            <li style="float:right"><a class="nav-link active" href="Impostazioni.html">Impostazioni</a></li>
+        </ul>
+    </nav>
+    <br><br><br>
+    <div class="card-container">
+        <div style="width:50%">
+            <div class="card1">
+                <div class="card-content">
+                    <p>Manutenzione Sensori</p>
+                </div>
+                <button onclick="startManutenzione()" class="card-button">Manutenzione Sensori!</button>
+            </div>
+        </div>
+        <div style="width:50%">
+            <div class="card2">
+                <div class="card-content">
+                    <p>Mostra Seriale</p>
+                </div>
+                <button onclick="generateSerial()" id="serialButton" class="card-button">Mostra Seriale</button>
+                <input type="text" id="serialCode" readonly style="display: none;">
+                <button onclick="copySerial()" id="copyButton" style="display: none;">Copia</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-container">
+        <div style="width:50%">
+            <div class="card3">
+                <div class="card-content">
+                    <p>Dati Casa Produttrice</p>
+                </div>
+                <button onclick="showData()" class="card-button">Dati Casa Produttrice!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+	function showPinPopup() {
+        var pin = prompt("Inserisci il PIN per accedere:");
+        if (pin === "1234") {
+            // PIN corretto, continua con la visualizzazione della pagina
+            document.body.style.display = "block";
+        } else {
+            // PIN errato, mostra messaggio di errore e nascondi la pagina
+            alert("PIN errato. Impossibile accedere alla pagina.");
+            document.body.style.display = "none";
+        }
+    }
+
+    // Chiamata alla funzione showPinPopup() all'avvio della pagina
+    showPinPopup();
+        function startManutenzione() {
+            alert("Processo manutenzione avviato, prego rimuovere i sensori");
+            var button = document.querySelector(".card1 button");
+            button.innerHTML = "Stop Manutenzione";
+            button.onclick = stopManutenzione;
+        }
+
+        function stopManutenzione() {
+            alert("Processo manutenzione terminato");
+            var button = document.querySelector(".card1 button");
+            button.innerHTML = "Prosegui alla Manutenzione Sensori!";
+            button.onclick = startManutenzione;
+        }
+
+        function generateSerial() {
+            var serialCode = Math.floor(Math.random() * 900000000000) + 100000000000;
+            document.getElementById("serialCode").value = serialCode;
+            document.getElementById("serialCode").style.display = "block";
+            document.getElementById("copyButton").style.display = "block";
+            document.getElementById("serialButton").disabled = true;
+        }
+
+        function copySerial() {
+            var serialCode = document.getElementById("serialCode");
+            serialCode.select();
+            serialCode.setSelectionRange(0, 99999); /* Per dispositivi mobili */
+            document.execCommand("copy");
+            alert("Codice seriale copiato: " + serialCode.value);
+        }
+
+        function showData() {
+            alert("Sistema creato dagli studenti:\nAlessio Buonomo\nMartina Raimo\nGiuseppe Candice");
+        }
+    </script>
+</body>
+
+</html>

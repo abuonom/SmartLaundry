@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Asciugatura</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-image: url("img/parthenope.jpg");
+      background-repeat: no-repeat;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+  <script>
+    function calcolaDurata(livello, data) {
+      // calcola la durata del lavaggio in millisecondi
+      var durata;
+
+      switch (livello) {
+        case "basso":
+          durata = 90 * 60 * 1000; // 90 minuti
+          break;
+        case "medio":
+          durata = 60 * 60 * 1000; // 60 minuti
+          break;
+        case "alto":
+          durata = 30 * 60 * 1000; // 30 minuti
+          break;
+        default:
+          durata = 60 * 60 * 1000; // 60 minuti (valore predefinito)
+          break;
+      }
+
+      // aggiungi la durata in base alla data di fine
+      var fine = new Date(data);
+      durata += fine.getTime() - Date.now();
+      return durata;
+    }
+
+    var interval; // variabile globale per l'intervallo del lavaggio
+    var lavaggiSelezionati = []; // array per memorizzare le date dei lavaggi
+
+    function isDataOccupata(data) {
+      return lavaggiSelezionati.includes(data);
+    }
+
+    function getPrimaDataLibera(data) {
+      var selectedDate = new Date(data);
+      while (isDataOccupata(selectedDate.toISOString().split("T")[0])) {
+        selectedDate.setDate(selectedDate.getDate() + 1);
+      }
+      return selectedDate.toISOString().split("T")[0];
+    }
+
+    function avviaLavaggio() {
+      var livello = document.getElementById("livello").value;
+      var data = document.getElementById("data").value;
+
+      // controlla se la data selezionata è fattibile
+      if (data < new Date().toISOString().split("T")[0]) {
+        alert("La data selezionata non è valida");
+        return;
+      }
+
+      // controlla se la data selezionata è già stata utilizzata per un lavaggio
+      if (isDataOccupata(data)) {
+        var primaDataLibera = getPrimaDataLibera(data);
+        alert("Nella data selezionata c'è già una asciugatura. La prima data libera è: " + primaDataLibera);
+        return;
+      }
+
+      // salva la data del lavaggio nell'array
+      lavaggiSelezionati.push(data);
+
+      alert("Asciugatura iniziata");
+
+      // calcola la durata del lavaggio
+      var durata = calcolaDurata(livello, data);
+
+      // avvia il lavaggio
+      var progress = 0;
+      interval = setInterval(function () {
+        progress += (100 / durata) * 1000;
+        if (progress >= 100) {
+          clearInterval(interval);
+          alert("Asciugatura completata");
+          $.removeCookie("lavaggio"); // rimuove il cookie al completamento del lavaggio
+
+          // rimuovi la data del lavaggio dall'array
+          var index = lavaggiSelezionati.indexOf(data);
+          if (index > -1) {
+            lavaggiSelezionati.splice(index, 1);
+          }
+        } else {
+          document.getElementById("progress-bar").value = progress;
+          $.cookie("lavaggio", progress); // salva il progresso del lavaggio in un cookie
+        }
+      }, 1000);
+    }
+
+    function fermaLavaggio() {
+      clearInterval(interval);
+      alert("Lavaggio interrotto");
+
+      // rimuovi la data del lavaggio dall'array
+      var data = document.getElementById("data").value;
+      var index = lavaggiSelezionati.indexOf(data);
+      if (index > -1) {
+        lavaggiSelezionati.splice(index, 1);
+      }
+    }
+  </script>
+</head>
+
+<body style="background-color:white">
+
+  <!-- nav-bar per la navigazione nelle funzioni-->
+  <nav>
+    <ul>
+      <li><a class="nav-link" href="HomePage.html">Home</a></li>
+      <li><a class="nav-link" href="Lavaggio.html">Lavaggio bucato</a></li>
+      <li><a class="nav-link active" href="Asciugatura.html">Asciugatura bucato</a></li>
+      <li><a class="nav-link" href="Deumidificatore.html">Deumidificazione Aria</a></li>
+      <li><a class="nav-link" href="Riscaldamento.html">Riscaldamento Aria</a></li>
+      <li><a class="nav-link" href="ParametriSensori.html">Parametri Sensori</a></li>
+      <li style="float:right"><a href="Impostazioni.html">Impostazioni</a></li>
+    </ul>
+  </nav>
+  <br>
+  <form id="fasi-lavaggio">
+    <label for="livello">Livello:</label>
+    <select id="livello">
+      <option value="basso">Basso - 200 Wattora</option>
+      <option value="medio">Medio - 500 Wattora</option>
+      <option value="alto">Alto - 1000 Wattora</option>
+    </select><br><br>
+    <label for="data">Data di fine asciugatura:</label>
+    <input type="date" id="data"><br><br>
+    <progress id="progress-bar" value="0" max="100"></progress><br><br>
+    <input type="button" value="Avvia o Riprendi asciugatura" onclick="avviaLavaggio()">
+    <input type="button" value="Ferma asciugatura" onclick="fermaLavaggio()">
+  </form>
+</body>
+
+</html>
